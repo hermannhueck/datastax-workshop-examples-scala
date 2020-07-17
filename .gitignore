@@ -1,0 +1,25 @@
+# directories
+target/
+
+# hidden directories
+.idea/
+.vscode/
+.metals/
+.ammonite/
+.bloop/
+project/.bloop/
+
+# files
+*.class
+*.log
+*.jar
+*.zip
+*.code-workspace
+project/metals.sbt
+secure-connect-killrvideocluster.zip
+
+# hidden files
+.history
+.envrc
+.env
+.DS_Store
