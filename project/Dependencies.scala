@@ -156,7 +156,8 @@ object Dependencies {
       junitInterface,
       junitPlatformRunner,
       junitJupiterApi,
-      junitJupiterEngine
+      junitJupiterEngine,
+      munit
     ).map(_ % Test)
 
   def hutilDependencies(scalaVersion: String)              =

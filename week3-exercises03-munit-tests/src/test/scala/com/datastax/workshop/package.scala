@@ -11,6 +11,10 @@ import hutil.stringformat._
 
 package object workshop {
 
+  // ===> WE WILL USE THIS VALUES EVERYWHERE
+  var SPACECRAFT = "Crew Dragon Endeavour,SpaceX"
+  var JOURNEY_ID = "90163870-c5d6-11ea-b11f-c30e2b038000"
+
   def sessionBuilder: CqlSessionBuilder =
     CqlSession
       .builder

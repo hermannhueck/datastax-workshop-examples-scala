@@ -3,41 +3,34 @@ package com.datastax.workshop
 import java.io.File
 import java.nio.file.Paths
 
-import org.junit.jupiter.api._
-import org.junit.platform.runner.JUnitPlatform
-import org.junit.runner.RunWith
+import scala.util.Using
 
 import org.slf4j.LoggerFactory
 
 import com.datastax.oss.driver.api.core.CqlSession
-import scala.util.Using
 
 /**
   * EXERCISE 2 : Connect to Astra using zip bundle and credentials.
   *
   * @author Developer Advocate Team
   */
-@RunWith(classOf[JUnitPlatform])
-class Ex02_Connect_to_Cassandra {
+class Ex02_Connect_to_Cassandra extends munit.FunSuite {
 
   /** Logger for the class. */
   private val LOGGER = LoggerFactory.getLogger("Exercise2")
 
-  @Test
-  @DisplayName("Test connectivity to Astra")
-  def should_connect_to_Astra(): Unit = {
+  test("Test connectivity to Astra") {
     LOGGER.info(startMarker)
     // Given
-    Assertions.assertTrue(DBConnection.SECURE_CONNECT_BUNDLE.nonEmpty, "Please fill DBConnection class constants")
-    Assertions.assertTrue(DBConnection.KEYSPACE.nonEmpty, "Please fill DBConnection class constants")
-    Assertions.assertTrue(DBConnection.USERNAME.nonEmpty, "Please fill DBConnection class constants")
-    Assertions.assertTrue(DBConnection.PASSWORD.nonEmpty, "Please fill DBConnection class constants")
-    Assertions.assertTrue(
+    assert(DBConnection.SECURE_CONNECT_BUNDLE.nonEmpty, "Please fill DBConnection class constants")
+    assert(DBConnection.KEYSPACE.nonEmpty, "Please fill DBConnection class constants")
+    assert(DBConnection.USERNAME.nonEmpty, "Please fill DBConnection class constants")
+    assert(DBConnection.PASSWORD.nonEmpty, "Please fill DBConnection class constants")
+    assert(
       new File(DBConnection.SECURE_CONNECT_BUNDLE).exists,
-      "File '" + DBConnection.SECURE_CONNECT_BUNDLE + "' has not been found\n" + "To run this sample you need to download the secure bundle file from ASTRA WebPage\n" + "More info here:"
+      s"File '${DBConnection.SECURE_CONNECT_BUNDLE}' has not been found\n" + "To run this sample you need to download the secure bundle file from ASTRA WebPage\n" + "More info here:"
     )
     LOGGER.info("File {} located", DBConnection.SECURE_CONNECT_BUNDLE)
-    // When
     Using {
       CqlSession
         .builder

@@ -26,7 +26,7 @@ lazy val commonSettings =
   )
 
 lazy val root = (project in file("."))
-  .aggregate(`week3-exercises01-java`, `week3-exercises02-scala`)
+  .aggregate(`week3-exercises01-java`, `week3-exercises02-scala`, `week3-exercises03-munit-tests`)
   .settings(commonSettings)
   .settings(
     name := "root",
@@ -60,6 +60,16 @@ lazy val `week3-exercises02-scala` = (project in file("week3-exercises02-scala")
   .settings(
     name := "week3-exercises02-scala",
     description := "Workshop Examples (week3) implemented in Scala using the datastax/java-driver for Cassandra",
+    libraryDependencies ++= Dependencies.datastaxJavaDriverDependencies(scalaVersion.value),
+    scalacOptions -= "-Werror"
+  )
+
+lazy val `week3-exercises03-munit-tests` = (project in file("week3-exercises03-munit-tests"))
+  .dependsOn(hutil)
+  .settings(commonSettings)
+  .settings(
+    name := "week3-exercises03-munit-tests",
+    description := "Workshop Examples (week3) implemented in Scala using the datastax/java-driver for Cassandra and MUnit for tests",
     libraryDependencies ++= Dependencies.datastaxJavaDriverDependencies(scalaVersion.value),
     scalacOptions -= "-Werror"
   )
