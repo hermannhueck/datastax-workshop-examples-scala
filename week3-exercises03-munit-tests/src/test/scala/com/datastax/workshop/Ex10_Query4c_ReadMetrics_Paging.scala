@@ -3,21 +3,9 @@ package com.datastax.workshop
 import java.util.UUID
 import java.util.Iterator
 
-import org.slf4j.LoggerFactory
-
-import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql._
 
-class Ex10_Query4c_ReadMetrics_Paging extends munit.FunSuite {
-
-  private val LOGGER                 = LoggerFactory.getLogger("Exercise4")
-  private var cqlSession: CqlSession = _
-
-  override def beforeAll(): Unit =
-    cqlSession = createCqlSession(LOGGER)
-
-  override def afterAll(): Unit =
-    closeCqlSession(cqlSession, LOGGER)
+class Ex10_Query4c_ReadMetrics_Paging extends ExerciseBase("Exercise4") {
 
   test("read a dimension paging") {
 
@@ -32,7 +20,6 @@ class Ex10_Query4c_ReadMetrics_Paging extends munit.FunSuite {
 
     var rs                 = cqlSession.execute(stmt)
     val pagingStateAsBytes = rs.getExecutionInfo.getPagingState
-    // we fetch everything
 
     showPage(rows = rs.iterator, items = rs.getAvailableWithoutFetching, pageNumber = 1)
 
@@ -52,8 +39,7 @@ class Ex10_Query4c_ReadMetrics_Paging extends munit.FunSuite {
 
     (0 until items).foreach { _ =>
       val row = rows.next
-      LOGGER
-        .info("- time={}, value={}", row.getInstant("reading_time"), row.getDouble("speed"))
+      LOGGER.info("- time={}, value={}", row.getInstant("reading_time"), row.getDouble("speed"))
     }
   }
 }

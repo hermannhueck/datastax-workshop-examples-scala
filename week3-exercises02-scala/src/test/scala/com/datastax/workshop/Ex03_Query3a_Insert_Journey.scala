@@ -1,33 +1,16 @@
 package com.datastax.workshop
 
-import org.junit.jupiter.api._
+import org.junit.jupiter.api.Test
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 
-import org.slf4j.LoggerFactory
-
-import com.datastax.oss.driver.api.core.CqlSession
+@RunWith(classOf[JUnitPlatform])
+object Ex03_Query3a_Insert_Journey extends ExerciseBase("Exercise3")
 
 @RunWith(classOf[JUnitPlatform])
-object Ex03_Query5a_Insert_Journey {
+class Ex03_Query3a_Insert_Journey {
 
-  private val LOGGER                         = LoggerFactory.getLogger("Exercise3")
-  private var cqlSession: CqlSession         = _
-  private var journeyRepo: JourneyRepository = _
-
-  @BeforeAll def initConnection(): Unit = {
-    cqlSession = createCqlSession(LOGGER)
-    journeyRepo = new JourneyRepository(cqlSession)
-  }
-
-  @AfterAll def closeConnectionToCassandra(): Unit =
-    closeCqlSession(cqlSession, LOGGER)
-}
-
-@RunWith(classOf[JUnitPlatform])
-class Ex03_Query5a_Insert_Journey {
-
-  import Ex03_Query5a_Insert_Journey._
+  import Ex03_Query3a_Insert_Journey._
 
   @Test
   def insert_a_journey(): Unit = {

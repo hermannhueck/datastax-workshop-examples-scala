@@ -1,22 +1,6 @@
 package com.datastax.workshop
 
-import org.slf4j.LoggerFactory
-
-import com.datastax.oss.driver.api.core.CqlSession
-
-class Ex03_Query3a_Insert_Journey extends munit.FunSuite {
-
-  private val LOGGER                         = LoggerFactory.getLogger("Exercise3")
-  private var cqlSession: CqlSession         = _
-  private var journeyRepo: JourneyRepository = _
-
-  override def beforeAll(): Unit = {
-    cqlSession = createCqlSession(LOGGER)
-    journeyRepo = new JourneyRepository(cqlSession)
-  }
-
-  override def afterAll(): Unit =
-    closeCqlSession(cqlSession, LOGGER)
+class Ex03_Query3a_Insert_Journey extends ExerciseBase("Exercise3") {
 
   test("insert a journey") {
 

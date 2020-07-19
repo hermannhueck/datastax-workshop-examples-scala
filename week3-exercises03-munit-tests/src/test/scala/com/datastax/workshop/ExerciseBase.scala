@@ -1,19 +1,24 @@
-package com.datastax
+package com.datastax.workshop
 
 import java.nio.file.Paths
 
 import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.CqlSessionBuilder
 
 import hutil.stringformat._
 
-package object workshop {
+abstract class ExerciseBase(exerciseName: String) extends munit.FunSuite {
 
   // ===> WE WILL USE THIS VALUES EVERYWHERE
-  var SPACECRAFT = "Crew Dragon Endeavour,SpaceX"
-  var JOURNEY_ID = "90163870-c5d6-11ea-b11f-c30e2b038000"
+  protected var SPACECRAFT = "Crew Dragon Endeavour,SpaceX"
+  protected var JOURNEY_ID = "90163870-c5d6-11ea-b11f-c30e2b038000"
+
+  protected val LOGGER                         = LoggerFactory.getLogger(exerciseName)
+  protected var cqlSession: CqlSession         = _
+  protected var journeyRepo: JourneyRepository = _
 
   def sessionBuilder: CqlSessionBuilder =
     CqlSession
@@ -35,4 +40,12 @@ package object workshop {
       cqlSession.close
     logger.info(stopMarker)
   }
+
+  override def beforeAll(): Unit = {
+    cqlSession = createCqlSession(LOGGER)
+    journeyRepo = new JourneyRepository(cqlSession)
+  }
+
+  override def afterAll(): Unit =
+    closeCqlSession(cqlSession, LOGGER)
 }

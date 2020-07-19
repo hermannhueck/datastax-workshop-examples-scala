@@ -1,20 +1,8 @@
 package com.datastax.workshop
 
-import org.slf4j.LoggerFactory
-
-import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql._
 
-class Ex07_Query4a_ListJourneys extends munit.FunSuite {
-
-  private val LOGGER                 = LoggerFactory.getLogger("Exercise4")
-  private var cqlSession: CqlSession = _
-
-  override def beforeAll(): Unit =
-    cqlSession = createCqlSession(LOGGER)
-
-  override def afterAll(): Unit =
-    closeCqlSession(cqlSession, LOGGER)
+class Ex07_Query4a_ListJourneys extends ExerciseBase("Exercise4") {
 
   /*
    * select * from spacecraft_journey_catalog

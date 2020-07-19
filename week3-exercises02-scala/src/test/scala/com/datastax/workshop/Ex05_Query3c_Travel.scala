@@ -3,38 +3,21 @@ package com.datastax.workshop
 import java.time.Instant
 import java.util.UUID
 
-import org.junit.jupiter.api._
+import org.junit.jupiter.api.Test
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 
-import org.slf4j.LoggerFactory
-
-import com.datastax.oss.driver.api.core.CqlSession
+@RunWith(classOf[JUnitPlatform])
+object Ex05_Query3c_Travel extends ExerciseBase("Exercise3")
 
 @RunWith(classOf[JUnitPlatform])
-object Ex05_Query5c_Travel {
+class Ex05_Query3c_Travel {
 
-  private val LOGGER                         = LoggerFactory.getLogger("Exercise3")
-  private var cqlSession: CqlSession         = _
-  private var journeyRepo: JourneyRepository = _
-
-  @BeforeAll def initConnection(): Unit = {
-    cqlSession = createCqlSession(LOGGER)
-    journeyRepo = new JourneyRepository(cqlSession)
-  }
-
-  @AfterAll def closeConnectionToCassandra(): Unit =
-    closeCqlSession(cqlSession, LOGGER)
-}
-
-@RunWith(classOf[JUnitPlatform])
-class Ex05_Query5c_Travel {
-
-  import Ex05_Query5c_Travel._
+  import Ex05_Query3c_Travel._
 
   @Test
-  @throws[InterruptedException]
   def save_readings(): Unit = {
+
     for (i <- 0 until 50) {
       val speed       = 300 + i + Math.random * 10
       val pressure    = Math.random * 20
@@ -45,8 +28,8 @@ class Ex05_Query5c_Travel {
       val readingTime = Instant.now
       journeyRepo
         .log(
-          UUID.fromString(Ex04_Query5b_TakeOff.JOURNEY_ID),
-          Ex04_Query5b_TakeOff.SPACECRAFT,
+          UUID.fromString(JOURNEY_ID),
+          SPACECRAFT,
           speed,
           pressure,
           temperature,
@@ -58,7 +41,7 @@ class Ex05_Query5c_Travel {
       Thread.sleep(200)
       LOGGER.info("{}/50 - travelling..", i)
     }
-    LOGGER.info("Reading saved", Ex04_Query5b_TakeOff.JOURNEY_ID)
+    LOGGER.info("Reading saved", JOURNEY_ID)
     LOGGER.info("SUCCESS")
 
     /* select * from spacecraft_speed_over_time

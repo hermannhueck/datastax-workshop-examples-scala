@@ -3,27 +3,14 @@ package com.datastax.workshop
 import java.util.UUID
 import java.util.Iterator
 
-import org.junit.jupiter.api._
+import org.junit.jupiter.api.Test
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 
-import org.slf4j.LoggerFactory
-
-import com.datastax.oss.driver.api.core.CqlSession
-import com.datastax.oss.driver.api.core.cql._
+import com.datastax.oss.driver.api.core.cql.{Row, SimpleStatement}
 
 @RunWith(classOf[JUnitPlatform])
-object Ex10_Query4c_ReadMetrics_Paging {
-
-  private val LOGGER                 = LoggerFactory.getLogger("Exercise4")
-  private var cqlSession: CqlSession = _
-
-  @BeforeAll def initConnection(): Unit =
-    cqlSession = createCqlSession(LOGGER)
-
-  @AfterAll def closeConnectionToCassandra(): Unit =
-    closeCqlSession(cqlSession, LOGGER)
-}
+object Ex10_Query4c_ReadMetrics_Paging extends ExerciseBase("Exercise4")
 
 @RunWith(classOf[JUnitPlatform])
 class Ex10_Query4c_ReadMetrics_Paging {
@@ -35,8 +22,8 @@ class Ex10_Query4c_ReadMetrics_Paging {
 
     var stmt = SimpleStatement
       .builder("select * from spacecraft_speed_over_time where spacecraft_name=? AND journey_id=?")
-      .addPositionalValue(Ex04_Query5b_TakeOff.SPACECRAFT)
-      .addPositionalValue(UUID.fromString(Ex04_Query5b_TakeOff.JOURNEY_ID))
+      .addPositionalValue(SPACECRAFT)
+      .addPositionalValue(UUID.fromString(JOURNEY_ID))
       .build
 
     // Set page to 10
@@ -44,7 +31,6 @@ class Ex10_Query4c_ReadMetrics_Paging {
 
     var rs                 = cqlSession.execute(stmt)
     val pagingStateAsBytes = rs.getExecutionInfo.getPagingState
-    // we fetch everything
 
     showPage(rows = rs.iterator, items = rs.getAvailableWithoutFetching, pageNumber = 1)
 
@@ -64,8 +50,7 @@ class Ex10_Query4c_ReadMetrics_Paging {
 
     (0 until items).foreach { _ =>
       val row = rows.next
-      LOGGER
-        .info("- time={}, value={}", row.getInstant("reading_time"), row.getDouble("speed"))
+      LOGGER.info("- time={}, value={}", row.getInstant("reading_time"), row.getDouble("speed"))
     }
   }
 }

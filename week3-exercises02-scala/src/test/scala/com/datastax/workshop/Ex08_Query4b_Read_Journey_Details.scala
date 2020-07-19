@@ -2,29 +2,12 @@ package com.datastax.workshop
 
 import java.util.UUID
 
-import org.junit.jupiter.api._
+import org.junit.jupiter.api.Test
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 
-import org.slf4j.LoggerFactory
-
-import com.datastax.oss.driver.api.core.CqlSession
-
 @RunWith(classOf[JUnitPlatform])
-object Ex08_Query4b_Read_Journey_Details {
-
-  private val LOGGER                         = LoggerFactory.getLogger("Exercise4")
-  private var cqlSession: CqlSession         = _
-  private var journeyRepo: JourneyRepository = _
-
-  @BeforeAll def initConnection(): Unit = {
-    cqlSession = createCqlSession(LOGGER)
-    journeyRepo = new JourneyRepository(cqlSession)
-  }
-
-  @AfterAll def closeConnectionToCassandra(): Unit =
-    closeCqlSession(cqlSession, LOGGER)
-}
+object Ex08_Query4b_Read_Journey_Details extends ExerciseBase("Exercise4")
 
 @RunWith(classOf[JUnitPlatform])
 class Ex08_Query4b_Read_Journey_Details {
@@ -39,9 +22,9 @@ class Ex08_Query4b_Read_Journey_Details {
   @Test
   def read_a_journey(): Unit = {
 
-    journeyRepo.find(UUID.fromString(Ex04_Query5b_TakeOff.JOURNEY_ID), Ex04_Query5b_TakeOff.SPACECRAFT) match {
+    journeyRepo.find(UUID.fromString(JOURNEY_ID), SPACECRAFT) match {
       case None          =>
-        LOGGER.info("Journey {} not found, check class 'Ex04_ReadParsePage' or DB", Ex04_Query5b_TakeOff.JOURNEY_ID)
+        LOGGER.info("Journey {} not found, check class 'Ex04_ReadParsePage' or DB", JOURNEY_ID)
         LOGGER.info("FAILURE")
       case Some(journey) =>
         LOGGER.info("Journey has been found")

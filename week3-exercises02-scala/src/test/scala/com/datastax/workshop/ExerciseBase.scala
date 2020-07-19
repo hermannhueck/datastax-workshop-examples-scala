@@ -1,15 +1,27 @@
-package com.datastax
+package com.datastax.workshop
 
 import java.nio.file.Paths
 
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.AfterAll
+
 import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.CqlSessionBuilder
 
 import hutil.stringformat._
 
-package object workshop {
+abstract class ExerciseBase(exerciseName: String) {
+
+  // ===> WE WILL USE THIS VALUES EVERYWHERE
+  var SPACECRAFT = "Crew Dragon Endeavour,SpaceX"
+  var JOURNEY_ID = "90163870-c5d6-11ea-b11f-c30e2b038000"
+
+  val LOGGER                         = LoggerFactory.getLogger(exerciseName)
+  var cqlSession: CqlSession         = _
+  var journeyRepo: JourneyRepository = _
 
   def sessionBuilder: CqlSessionBuilder =
     CqlSession
@@ -31,4 +43,12 @@ package object workshop {
       cqlSession.close
     logger.info(stopMarker)
   }
+
+  @BeforeAll def initConnection(): Unit = {
+    cqlSession = createCqlSession(LOGGER)
+    journeyRepo = new JourneyRepository(cqlSession)
+  }
+
+  @AfterAll def closeConnectionToCassandra(): Unit =
+    closeCqlSession(cqlSession, LOGGER)
 }

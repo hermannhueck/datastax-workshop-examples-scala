@@ -3,23 +3,7 @@ package com.datastax.workshop
 import java.time.Instant
 import java.util.UUID
 
-import org.slf4j.LoggerFactory
-
-import com.datastax.oss.driver.api.core.CqlSession
-
-class Ex05_Query3c_Travel extends munit.FunSuite {
-
-  private val LOGGER                         = LoggerFactory.getLogger("Exercise3")
-  private var cqlSession: CqlSession         = _
-  private var journeyRepo: JourneyRepository = _
-
-  override def beforeAll(): Unit = {
-    cqlSession = createCqlSession(LOGGER)
-    journeyRepo = new JourneyRepository(cqlSession)
-  }
-
-  override def afterAll(): Unit =
-    closeCqlSession(cqlSession, LOGGER)
+class Ex05_Query3c_Travel extends ExerciseBase("Exercise3") {
 
   test("save readings") {
 

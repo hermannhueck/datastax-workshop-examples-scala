@@ -1,54 +1,34 @@
 package com.datastax.workshop
 
 import java.io.File
-import java.nio.file.Paths
 
 import org.junit.jupiter.api._
+import Assertions._
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 
-import org.slf4j.LoggerFactory
+@RunWith(classOf[JUnitPlatform])
+object Ex02_Connect_to_Cassandra extends ExerciseBase("Exercise2")
 
-import com.datastax.oss.driver.api.core.CqlSession
-import scala.util.Using
-
-/**
-  * EXERCISE 2 : Connect to Astra using zip bundle and credentials.
-  *
-  * @author Developer Advocate Team
-  */
 @RunWith(classOf[JUnitPlatform])
 class Ex02_Connect_to_Cassandra {
 
-  /** Logger for the class. */
-  private val LOGGER = LoggerFactory.getLogger("Exercise2")
+  import Ex02_Connect_to_Cassandra._
 
   @Test
-  @DisplayName("Test connectivity to Astra")
   def should_connect_to_Astra(): Unit = {
-    LOGGER.info(startMarker)
-    // Given
-    Assertions.assertTrue(DBConnection.SECURE_CONNECT_BUNDLE.nonEmpty, "Please fill DBConnection class constants")
-    Assertions.assertTrue(DBConnection.KEYSPACE.nonEmpty, "Please fill DBConnection class constants")
-    Assertions.assertTrue(DBConnection.USERNAME.nonEmpty, "Please fill DBConnection class constants")
-    Assertions.assertTrue(DBConnection.PASSWORD.nonEmpty, "Please fill DBConnection class constants")
-    Assertions.assertTrue(
+
+    assertTrue(DBConnection.SECURE_CONNECT_BUNDLE.nonEmpty, "Please fill DBConnection class constants")
+    assertTrue(DBConnection.KEYSPACE.nonEmpty, "Please fill DBConnection class constants")
+    assertTrue(DBConnection.USERNAME.nonEmpty, "Please fill DBConnection class constants")
+    assertTrue(DBConnection.PASSWORD.nonEmpty, "Please fill DBConnection class constants")
+    assertTrue(
       new File(DBConnection.SECURE_CONNECT_BUNDLE).exists,
       "File '" + DBConnection.SECURE_CONNECT_BUNDLE + "' has not been found\n" + "To run this sample you need to download the secure bundle file from ASTRA WebPage\n" + "More info here:"
     )
     LOGGER.info("File {} located", DBConnection.SECURE_CONNECT_BUNDLE)
-    // When
-    Using {
-      CqlSession
-        .builder
-        .withCloudSecureConnectBundle(Paths.get(DBConnection.SECURE_CONNECT_BUNDLE))
-        .withAuthCredentials(DBConnection.USERNAME, DBConnection.PASSWORD)
-        .withKeyspace(DBConnection.KEYSPACE)
-        .build
-    } { cqlSession =>
-      LOGGER.info("Connected with Keyspace {}", cqlSession.getKeyspace.get)
-    }
+
+    LOGGER.info("Connected with Keyspace {}", cqlSession.getKeyspace.get)
     LOGGER.info("SUCCESS")
-    LOGGER.info(stopMarker)
   }
 }

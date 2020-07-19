@@ -1,26 +1,13 @@
 package com.datastax.workshop
 
-import org.junit.jupiter.api._
+import org.junit.jupiter.api.Test
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 
-import org.slf4j.LoggerFactory
-
-import com.datastax.oss.driver.api.core.CqlSession
-import com.datastax.oss.driver.api.core.cql._
+import com.datastax.oss.driver.api.core.cql.SimpleStatement
 
 @RunWith(classOf[JUnitPlatform])
-object Ex07_Query4a_ListJourneys {
-
-  private val LOGGER                 = LoggerFactory.getLogger("Exercise4")
-  private var cqlSession: CqlSession = _
-
-  @BeforeAll def initConnection(): Unit =
-    cqlSession = createCqlSession(LOGGER)
-
-  @AfterAll def closeConnectionToCassandra(): Unit =
-    closeCqlSession(cqlSession, LOGGER)
-}
+object Ex07_Query4a_ListJourneys extends ExerciseBase("Exercise4")
 
 @RunWith(classOf[JUnitPlatform])
 class Ex07_Query4a_ListJourneys {
@@ -37,10 +24,11 @@ class Ex07_Query4a_ListJourneys {
 
     val stmt = SimpleStatement
       .builder("select * from spacecraft_journey_catalog where spacecraft_name=?")
-      .addPositionalValue(Ex04_Query5b_TakeOff.SPACECRAFT)
+      .addPositionalValue(SPACECRAFT)
       .build
 
     val rs = cqlSession.execute(stmt)
+
     import scala.jdk.CollectionConverters._
     rs.all().asScala.foreach { row =>
       LOGGER.info("- Journey: {} Summary: {}", row.getUuid("journey_id"), row.getString("summary"))

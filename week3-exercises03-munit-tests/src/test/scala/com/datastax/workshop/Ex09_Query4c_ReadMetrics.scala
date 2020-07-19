@@ -2,21 +2,9 @@ package com.datastax.workshop
 
 import java.util.UUID
 
-import org.slf4j.LoggerFactory
-
-import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql._
 
-class Ex09_Query4c_ReadMetrics extends munit.FunSuite {
-
-  private val LOGGER                 = LoggerFactory.getLogger("Exercise4")
-  private var cqlSession: CqlSession = _
-
-  override def beforeAll(): Unit =
-    cqlSession = createCqlSession(LOGGER)
-
-  override def afterAll(): Unit =
-    closeCqlSession(cqlSession, LOGGER)
+class Ex09_Query4c_ReadMetrics extends ExerciseBase("Exercise4") {
 
   test("read a dimension") {
 
@@ -26,19 +14,20 @@ class Ex09_Query4c_ReadMetrics extends munit.FunSuite {
       .addPositionalValue(UUID.fromString(JOURNEY_ID))
       .build
 
-    val rs     = cqlSession.execute(stmt)
-    // we fetch everything
-    var offset = 0
+    val rs = cqlSession.execute(stmt)
+
     import scala.jdk.CollectionConverters._
-    rs.all().asScala.foreach { row =>
-      LOGGER.info(
-        "idx:{}, time={}, value={}", {
-          offset += 1; offset
-        },
-        row.getInstant("reading_time"),
-        row.getDouble("speed")
-      )
+    val rows = rs.all().asScala
+    rows.zipWithIndex.foreach {
+      case (row, index) =>
+        LOGGER.info(
+          "idx:{}, time={}, value={}",
+          index,
+          row.getInstant("reading_time"),
+          row.getDouble("speed")
+        )
     }
+
     LOGGER.info("SUCCESS")
   }
 }

@@ -2,23 +2,7 @@ package com.datastax.workshop
 
 import java.util.UUID
 
-import org.slf4j.LoggerFactory
-
-import com.datastax.oss.driver.api.core.CqlSession
-
-class Ex08_Query4b_Read_Journey_Details extends munit.FunSuite {
-
-  private val LOGGER                         = LoggerFactory.getLogger("Exercise4")
-  private var cqlSession: CqlSession         = _
-  private var journeyRepo: JourneyRepository = _
-
-  override def beforeAll(): Unit = {
-    cqlSession = createCqlSession(LOGGER)
-    journeyRepo = new JourneyRepository(cqlSession)
-  }
-
-  override def afterAll(): Unit =
-    closeCqlSession(cqlSession, LOGGER)
+class Ex08_Query4b_Read_Journey_Details extends ExerciseBase("Exercise4") {
 
   /*
    * select * from spacecraft_journey_catalog
