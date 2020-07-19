@@ -25,8 +25,15 @@ lazy val commonSettings =
           |""".stripMargin
   )
 
+import Dependencies._
+
 lazy val root = (project in file("."))
-  .aggregate(`week3-exercises01-java`, `week3-exercises02-scala`, `week3-exercises03-munit-tests`)
+  .aggregate(
+    `week3-exercises01-java`,
+    `week3-exercises02-scala`,
+    `week3-exercises03-munit-tests`,
+    `week3-exercises04-phantom`
+  )
   .settings(commonSettings)
   .settings(
     name := "root",
@@ -50,8 +57,7 @@ lazy val `week3-exercises01-java` = (project in file("week3-exercises01-java"))
   .settings(
     name := "week3-exercises01-java",
     description := "Workshop Examples (week3) implemented in Java using the datastax/java-driver for Cassandra",
-    libraryDependencies ++= Dependencies.datastaxJavaDriverDependencies(scalaVersion.value),
-    scalacOptions -= "-Werror"
+    libraryDependencies ++= datastaxJavaDriverDependencies ++ junitTestDependencies
   )
 
 lazy val `week3-exercises02-scala` = (project in file("week3-exercises02-scala"))
@@ -60,8 +66,7 @@ lazy val `week3-exercises02-scala` = (project in file("week3-exercises02-scala")
   .settings(
     name := "week3-exercises02-scala",
     description := "Workshop Examples (week3) implemented in Scala using the datastax/java-driver for Cassandra",
-    libraryDependencies ++= Dependencies.datastaxJavaDriverDependencies(scalaVersion.value),
-    scalacOptions -= "-Werror"
+    libraryDependencies ++= datastaxJavaDriverDependencies ++ junitTestDependencies
   )
 
 lazy val `week3-exercises03-munit-tests` = (project in file("week3-exercises03-munit-tests"))
@@ -70,7 +75,16 @@ lazy val `week3-exercises03-munit-tests` = (project in file("week3-exercises03-m
   .settings(
     name := "week3-exercises03-munit-tests",
     description := "Workshop Examples (week3) implemented in Scala using the datastax/java-driver for Cassandra and MUnit for tests",
-    libraryDependencies ++= Dependencies.datastaxJavaDriverDependencies(scalaVersion.value),
+    libraryDependencies ++= datastaxJavaDriverDependencies ++ munitTestDependencies
+  )
+
+lazy val `week3-exercises04-phantom` = (project in file("week3-exercises04-phantom"))
+  .dependsOn(hutil)
+  .settings(commonSettings)
+  .settings(
+    name := "week3-exercises04-phantom",
+    description := "Workshop Examples (week3) implemented in Scala using the datastax/java-driver for Cassandra and MUnit for tests",
+    libraryDependencies ++= datastaxJavaDriverDependencies ++ phantomDependencies ++ munitTestDependencies,
     scalacOptions -= "-Werror"
   )
 

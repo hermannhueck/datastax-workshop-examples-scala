@@ -106,7 +106,7 @@ object Dependencies {
   def scalaCompiler(scalaVersion: String) = "org.scala-lang" % "scala-compiler" % scalaVersion
   def scalaReflect(scalaVersion: String)  = "org.scala-lang" % "scala-reflect"  % scalaVersion
 
-  def coreDependencies(scalaVersion: String)               =
+  def coreDependencies(scalaVersion: String) =
     Seq(
       // scalaCompiler(scalaVersion),
       // scalaReflect(scalaVersion),
@@ -145,22 +145,35 @@ object Dependencies {
       scalaCheck
     ).map(_ % Test)
 
-  def datastaxJavaDriverDependencies(scalaVersion: String) =
+  def datastaxJavaDriverDependencies         =
     Seq(
       datastaxCore,
       datastaxQueryBuilder,
       datastaxMapperRuntime,
       datastaxMapperProcessor,
       logback
-    ) ++ Seq(
+    )
+
+  def phantomDependencies =
+    Seq(
+      phantomDsl,
+      logback
+    )
+
+  def junitTestDependencies                   =
+    Seq(
       junitInterface,
       junitPlatformRunner,
       junitJupiterApi,
-      junitJupiterEngine,
+      junitJupiterEngine
+    ).map(_ % Test)
+
+  def munitTestDependencies                   =
+    Seq(
       munit
     ).map(_ % Test)
 
-  def hutilDependencies(scalaVersion: String)              =
+  def hutilDependencies(scalaVersion: String) =
     Seq(
       scalaCompiler(scalaVersion),
       scalaReflect(scalaVersion),
