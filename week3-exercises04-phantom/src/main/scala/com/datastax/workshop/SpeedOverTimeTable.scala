@@ -49,4 +49,9 @@ abstract class SpeedOverTimeTable extends Table[SpeedOverTimeTable, SpeedOverTim
       .and(j => j.journeyId eqs journeyId)
       .fetch()
       .await()
+
+  def clearTable(): ResultSet =
+    truncate()
+      .future()
+      .await()
 }

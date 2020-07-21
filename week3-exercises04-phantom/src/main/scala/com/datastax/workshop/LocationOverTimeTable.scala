@@ -50,4 +50,9 @@ abstract class LocationOverTimeTable extends Table[LocationOverTimeTable, Locati
       .and(j => j.journeyId eqs journeyId)
       .fetch()
       .await()
+
+  def clearTable(): ResultSet =
+    truncate()
+      .future()
+      .await()
 }

@@ -49,4 +49,9 @@ abstract class PressureOverTimeTable extends Table[PressureOverTimeTable, Pressu
       .and(j => j.journeyId eqs journeyId)
       .fetch()
       .await()
+
+  def clearTable(): ResultSet =
+    truncate()
+      .future()
+      .await()
 }

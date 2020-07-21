@@ -31,6 +31,15 @@ class JourneyDB(override val connector: CassandraConnection) extends Database[Jo
     val location = Map("loc_x" -> loc_x, "loc_y" -> loc_y, "loc_z" -> loc_z)
     locationOverTime.create(LocationOverTime(spaceCraft, journeyId, readingTime, "AU", location))
   }
+
+  def clearTables(): Unit = {
+    speedOverTime.clearTable()
+    pressureOverTime.clearTable()
+    temperatureOverTime.clearTable()
+    locationOverTime.clearTable()
+    journeys.clearTable()
+    ()
+  }
 }
 
 object JourneyDB extends JourneyDB(DBConnection.connector)

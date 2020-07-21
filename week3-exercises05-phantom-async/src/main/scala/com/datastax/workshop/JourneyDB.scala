@@ -41,6 +41,7 @@ class JourneyDB(override val connector: CassandraConnection) extends Database[Jo
       _ <- pressureOverTime.clearTable()
       _ <- temperatureOverTime.clearTable()
       _ <- locationOverTime.clearTable()
+      _ <- journeys.clearTable()
     } yield ()
 }
 

@@ -49,4 +49,9 @@ abstract class TemperatureOverTimeTable extends Table[TemperatureOverTimeTable, 
       .and(j => j.journeyId eqs journeyId)
       .fetch()
       .await()
+
+  def clearTable(): ResultSet =
+    truncate()
+      .future()
+      .await()
 }

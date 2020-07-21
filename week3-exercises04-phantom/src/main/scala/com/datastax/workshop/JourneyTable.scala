@@ -88,7 +88,7 @@ abstract class JourneyTable extends Table[JourneyTable, Journey] {
       .await()
 
   @annotation.nowarn("cat=deprecation")
-  def takeoff(journeyId: UUID, spacecraft: String): ResultSet = {
+  def takeoff(journeyId: UUID, spacecraft: String): ResultSet =
     update
       .where(j => j.spacecraft eqs spacecraft)
       .and(j => j.id eqs journeyId)
@@ -98,10 +98,9 @@ abstract class JourneyTable extends Table[JourneyTable, Journey] {
       .consistencyLevel_=(ConsistencyLevel.QUORUM)
       .future()
       .await()
-  }
 
   @annotation.nowarn("cat=deprecation")
-  def landing(journeyId: UUID, spacecraft: String): ResultSet = {
+  def landing(journeyId: UUID, spacecraft: String): ResultSet =
     update
       .where(j => j.spacecraft eqs spacecraft)
       .and(j => j.id eqs journeyId)
@@ -110,5 +109,9 @@ abstract class JourneyTable extends Table[JourneyTable, Journey] {
       .consistencyLevel_=(ConsistencyLevel.QUORUM)
       .future()
       .await()
-  }
+
+  def clearTable(): ResultSet =
+    truncate()
+      .future()
+      .await()
 }

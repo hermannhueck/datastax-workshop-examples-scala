@@ -232,4 +232,20 @@ class JourneyRepository(cqlSession: CqlSession) {
 
     Option(rs.one()).map(Journey.apply)
   }
+
+  def clearTable(tableName: String): ResultSet =
+    cqlSession.execute(
+      SimpleStatement
+        .builder(s"truncate table $tableName")
+        .build
+    )
+
+  def clearTables(): Unit =
+    List(
+      TABLE_METRIC_SPEED,
+      TABLE_METRIC_TEMPERATURE,
+      TABLE_METRIC_PRESSURE,
+      TABLE_METRIC_PRESSURE,
+      TABLE_JOURNEY
+    ) foreach clearTable
 }
