@@ -32,7 +32,8 @@ lazy val root = (project in file("."))
     `week3-exercises01-java`,
     `week3-exercises02-scala`,
     `week3-exercises03-munit-tests`,
-    `week3-exercises04-phantom`
+    `week3-exercises04-phantom`,
+    `week3-exercises05-phantom-async`
   )
   .settings(commonSettings)
   .settings(
@@ -74,6 +75,16 @@ lazy val `week3-exercises04-phantom` = (project in file("week3-exercises04-phant
   .settings(
     name := "week3-exercises04-phantom",
     description := "Workshop Examples (week3) implemented in Scala using the datastax/java-driver for Cassandra and MUnit for tests",
+    libraryDependencies ++= phantomDependencies ++ munitTestDependencies,
+    scalacOptions -= "-Werror"
+  )
+
+lazy val `week3-exercises05-phantom-async` = (project in file("week3-exercises05-phantom-async"))
+  .dependsOn(hutil)
+  .settings(commonSettings)
+  .settings(
+    name := "week3-exercises05-phantom-async",
+    description := "Make Workshop Examples (week3) asynchronous using scala.concurrent.Future",
     libraryDependencies ++= phantomDependencies ++ munitTestDependencies,
     scalacOptions -= "-Werror"
   )

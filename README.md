@@ -6,7 +6,7 @@ Before starting sbt check with: *java -version*
 
 It uses the *sbt* build tool.
 
-This project contains four sub projects - one built on the base of the previous one:
+This project contains five sub projects - one built on the base of the previous one:
 
 1. week3-exercises01-java:
    Improved version of the Java examples by Datastax following the DRY principle.
@@ -26,11 +26,18 @@ This project contains four sub projects - one built on the base of the previous 
    Hence you no longer define CQL statements in strings but in the DSL checked by the Scala compiler.
    The Phantom driver is a wrapper around the datastax/java-driver.
 
+5. week3-exercises05-phantom-async:
+   Changed the Cassandra access methods to return scala.concurrent.Future[A] instead of A.
+   MUnit tests run asynchronously when the 'test' method returns a Future.
+
 ### Resources:
 
 - Datastax Java Driver
   - https://github.com/datastax/java-driver
 
-- Phantom
+- Phantom Scala Driver:
   - https://github.com/outworkers/phantom
   - https://medium.com/outworkers/a-series-of-phantom-part1-getting-started-with-phantom-1014787bc550
+
+- MUnit test framework:
+  - https://scalameta.org/munit/
