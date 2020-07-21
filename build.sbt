@@ -41,16 +41,6 @@ lazy val root = (project in file("."))
     sourceDirectories := Seq.empty
   )
 
-// lazy val core = (project in file("core"))
-//   .dependsOn(hutil)
-//   .settings(commonSettings)
-//   .settings(
-//     name := projectName,
-//     description := projectDescription,
-//     libraryDependencies ++= Dependencies.coreDependencies(scalaVersion.value),
-//     dependencyOverrides += Dependencies.metricsCore
-//   )
-
 lazy val `week3-exercises01-java` = (project in file("week3-exercises01-java"))
   .dependsOn(hutil)
   .settings(commonSettings)
@@ -84,7 +74,7 @@ lazy val `week3-exercises04-phantom` = (project in file("week3-exercises04-phant
   .settings(
     name := "week3-exercises04-phantom",
     description := "Workshop Examples (week3) implemented in Scala using the datastax/java-driver for Cassandra and MUnit for tests",
-    libraryDependencies ++= datastaxJavaDriverDependencies ++ phantomDependencies ++ munitTestDependencies,
+    libraryDependencies ++= phantomDependencies ++ munitTestDependencies,
     scalacOptions -= "-Werror"
   )
 
