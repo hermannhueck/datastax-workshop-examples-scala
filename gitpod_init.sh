@@ -20,13 +20,13 @@ curl -Lo $APPS_DIR/cs https://git.io/coursier-cli-linux && chmod +x $APPS_DIR/cs
 cs install --install-dir $APPS_DIR --only-prebuilt=true bloop
 cs install --install-dir $APPS_DIR sbt
 
-cs fetch org.scalameta:metals_2.12:$METALS_VERSION --cache=$METALS_DIR/coursier 
-cs fetch org.scalameta:scalafmt-cli_2.12:$SCALAFMT_VERSION --cache=$METALS_DIR/coursier 
-
 # sleep a while to let coursier finish it's work
-sleep 10
+# sleep 10
 
 sbt -Dbloop.export-jar-classifiers=sources bloopInstall
 bloop compile --cascade root
+
+cs fetch org.scalameta:metals_2.12:$METALS_VERSION --cache=$METALS_DIR/coursier 
+cs fetch org.scalameta:scalafmt-cli_2.12:$SCALAFMT_VERSION --cache=$METALS_DIR/coursier 
 
 echo "export PATH=\$PATH:/usr/local/openjdk-8/bin:$APPS_DIR" >> ~/.bashrc
