@@ -20,9 +20,6 @@ curl -Lo $APPS_DIR/cs https://git.io/coursier-cli-linux && chmod +x $APPS_DIR/cs
 cs install --install-dir $APPS_DIR --only-prebuilt=true bloop
 cs install --install-dir $APPS_DIR sbt
 
-# sleep a while to let coursier finish it's work
-# sleep 10
-
 sbt -Dbloop.export-jar-classifiers=sources bloopInstall
 bloop compile --cascade root
 
