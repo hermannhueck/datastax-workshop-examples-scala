@@ -57,6 +57,12 @@ Two options, how to compile, run and test the examples
   into the project root to access your own Astra instance
 - Continue with 3.
 
+** Possible Problems:**
+- Sometimes Metals is too fast detecting the sbt project. The other tools are not yet
+downloaded and installed. In this case run again: *Metals: Import build* ]
+- If the initial tool installation (automatic by *gitpod_init.sh*) fails,
+  try to run *./gitpod_init.sh* again manually in the terminal window.
+
 #### 2. Instructions for local development on your machine,
 - Clone this repo
 - Install sbt on your machine: https://www.scala-sbt.org/1.x/docs/Setup.html
