@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 METALS_DIR="$GITPOD_REPO_ROOT/.metals"
 APPS_DIR="$METALS_DIR/apps"
