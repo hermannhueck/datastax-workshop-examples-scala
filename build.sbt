@@ -13,8 +13,8 @@ lazy val commonSettings =
     Compile / console / scalacOptions := ScalacOptions.consoleScalacOptions,
     Test / console / scalacOptions := ScalacOptions.consoleScalacOptions,
     semanticdbEnabled := true,
-    semanticdbVersion := "4.3.16",                                                // scalafixSemanticdb.revision,
-    scalafixDependencies ++= Seq("com.github.liancheng" %% "organize-imports" % "0.3.1-RC3"),
+    semanticdbVersion := "4.3.20",                                                // scalafixSemanticdb.revision,
+    scalafixDependencies ++= Seq("com.github.liancheng" %% "organize-imports" % "0.4.0"),
     Test / parallelExecution := false,
     Test / testOptions += Tests.Argument(TestFrameworks.ScalaCheck, "-s", "100"), // -s = -minSuccessfulTests
     testFrameworks += new TestFramework("munit.Framework"),
