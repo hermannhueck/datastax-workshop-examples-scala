@@ -96,15 +96,15 @@ class JourneyRepository(cqlSession: CqlSession) {
     * select journey_id, spacecraft_name,summary,start,end,active from killrvideo.spacecraft_journey_catalog;
     */
   def log(
-      journeyId: UUID,
       spacecraft: String,
+      journeyId: UUID,
+      readTime: Instant,
       speed: Double,
       pressure: Double,
       temperature: Double,
       x: Double,
       y: Double,
-      z: Double,
-      readTime: Instant
+      z: Double
   ): ResultSet = {
     val bb          = new BatchStatementBuilder(BatchType.LOGGED)
     bb.addStatement(
@@ -231,6 +231,44 @@ class JourneyRepository(cqlSession: CqlSession) {
     )
 
     Option(rs.one()).map(Journey.apply)
+  }
+
+  def findJourneys(spacecraft: String): List[Journey] = {
+
+    val stmt = SimpleStatement
+      .builder("select * from spacecraft_journey_catalog where spacecraft_name=?")
+      .addPositionalValue(spacecraft)
+      .build
+
+    val rs = cqlSession.execute(stmt)
+    import scala.jdk.CollectionConverters._
+    rs.all().asScala.toList.map(Journey.apply)
+  }
+
+  def findSpeedMeasurements(spacecraft: String, journeyId: UUID): List[Row] =
+    findMeasurements(TABLE_METRIC_SPEED, spacecraft, journeyId)
+
+  def findTemperatureMeasurements(spacecraft: String, journeyId: UUID): List[Row] =
+    findMeasurements(TABLE_METRIC_TEMPERATURE, spacecraft, journeyId)
+
+  def findPressureMeasurements(spacecraft: String, journeyId: UUID): List[Row] =
+    findMeasurements(TABLE_METRIC_PRESSURE, spacecraft, journeyId)
+
+  def findLocationMeasurements(spacecraft: String, journeyId: UUID): List[Row] =
+    findMeasurements(TABLE_METRIC_LOCATION, spacecraft, journeyId)
+
+  private def findMeasurements(tableName: String, spacecraft: String, journeyId: UUID): List[Row] = {
+
+    val stmt = SimpleStatement
+      .builder(s"select * from $tableName where spacecraft_name=? AND journey_id=?")
+      .addPositionalValue(spacecraft)
+      .addPositionalValue(journeyId)
+      .build
+
+    val rs = cqlSession.execute(stmt)
+
+    import scala.jdk.CollectionConverters._
+    rs.all().asScala.toList
   }
 
   def clearTable(tableName: String): ResultSet =

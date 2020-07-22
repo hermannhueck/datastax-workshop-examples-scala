@@ -2,6 +2,9 @@ package com.datastax.workshop;
 
 import java.time.Instant;
 import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -83,8 +86,8 @@ public class JourneyRepository implements DataModelConstants {
          * Check result with select journey_id, spacecraft_name,summary,start,end,active
          * from killrvideo.spacecraft_journey_catalog;
          */
-        public void log(UUID journeyId, String spacecraft, double speed, double pressure, double temperature, double x,
-                        double y, double z, Instant readTime) {
+        public void log(String spacecraft, UUID journeyId, Instant readTime, double speed, double pressure,
+                        double temperature, double x, double y, double z) {
                 BatchStatementBuilder bb = new BatchStatementBuilder(BatchType.LOGGED);
                 bb.addStatement(SimpleStatement
                                 .builder("INSERT INTO spacecraft_speed_over_time (" + "spacecraft_name,journey_id,"
@@ -172,6 +175,41 @@ public class JourneyRepository implements DataModelConstants {
                 j.setEnd(row.getInstant(JOURNEY_END));
                 j.setId(row.getUuid(JOURNEY_ID));
                 return j;
+        }
+
+        public List<Journey> findJourneys(String spacecraft) {
+
+                SimpleStatement stmt = SimpleStatement
+                                .builder("select * from spacecraft_journey_catalog where spacecraft_name=?")
+                                .addPositionalValue(spacecraft).build();
+
+                ResultSet rs = cqlSession.execute(stmt);
+                return rs.all().stream().map(row -> mapJourney(row)).collect(Collectors.toList());
+        }
+
+        public List<Row> findSpeedMeasurements(String spacecraft, UUID journeyId) {
+                return findMeasurements(TABLE_METRIC_SPEED, spacecraft, journeyId);
+        }
+
+        public List<Row> findTemperatureMeasurements(String spacecraft, UUID journeyId) {
+                return findMeasurements(TABLE_METRIC_TEMPERATURE, spacecraft, journeyId);
+        }
+
+        public List<Row> findPressureMeasurements(String spacecraft, UUID journeyId) {
+                return findMeasurements(TABLE_METRIC_PRESSURE, spacecraft, journeyId);
+        }
+
+        public List<Row> findLocationMeasurements(String spacecraft, UUID journeyId) {
+                return findMeasurements(TABLE_METRIC_LOCATION, spacecraft, journeyId);
+        }
+
+        private List<Row> findMeasurements(String tableName, String spacecraft, UUID journeyId) {
+
+                SimpleStatement stmt = SimpleStatement
+                                .builder("select * from " + tableName + " where spacecraft_name=? AND journey_id=?")
+                                .addPositionalValue(spacecraft).addPositionalValue(journeyId).build();
+
+                return cqlSession.execute(stmt).all();
         }
 
         public ResultSet clearTable(String tableName) {

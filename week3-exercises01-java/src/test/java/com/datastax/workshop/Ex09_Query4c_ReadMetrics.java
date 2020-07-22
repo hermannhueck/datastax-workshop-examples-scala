@@ -1,6 +1,7 @@
 package com.datastax.workshop;
 
 import java.util.UUID;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
@@ -18,18 +19,47 @@ public class Ex09_Query4c_ReadMetrics extends ExerciseBase {
     }
 
     @Test
-    public void read_a_dimension() {
+    public void read_measurements() {
 
-        SimpleStatement stmt = SimpleStatement
-                .builder("select * from spacecraft_speed_over_time where spacecraft_name=? AND journey_id=?")
-                .addPositionalValue(SPACECRAFT).addPositionalValue(UUID.fromString(JOURNEY_ID)).build();
-
-        ResultSet rs = cqlSession.execute(stmt);
-
+        LOGGER.info("----- Speed Measurements -----");
+        List<Row> rows = journeyRepo.findSpeedMeasurements(SPACECRAFT, UUID.fromString(JOURNEY_ID));
         int offset = 0;
-        for (Row row : rs.all()) {
-            LOGGER.info("idx:{}, time={}, value={}", ++offset, row.getInstant("reading_time"), row.getDouble("speed"));
+        for (Row row : rows) {
+            logMeasurement("speed", ++offset, row);
         }
+
+        LOGGER.info("----- Temperature Measurements -----");
+        rows = journeyRepo.findTemperatureMeasurements(SPACECRAFT, UUID.fromString(JOURNEY_ID));
+        offset = 0;
+        for (Row row : rows) {
+            logMeasurement("temperature", ++offset, row);
+        }
+
+        LOGGER.info("----- Pressure Measurements -----");
+        rows = journeyRepo.findPressureMeasurements(SPACECRAFT, UUID.fromString(JOURNEY_ID));
+        offset = 0;
+        for (Row row : rows) {
+            logMeasurement("pressure", ++offset, row);
+        }
+
+        LOGGER.info("----- Location Measurements -----");
+        rows = journeyRepo.findLocationMeasurements(SPACECRAFT, UUID.fromString(JOURNEY_ID));
+        offset = 0;
+        for (Row row : rows) {
+            logLocationMeasurement(++offset, row);
+        }
+
         LOGGER.info("SUCCESS");
+    }
+
+    private void logMeasurement(String kind, int index, Row row) {
+        LOGGER.info("idx:{}, time={}, value={}", index, row.getInstant("reading_time"), row.getDouble(kind));
+    }
+
+    private void logLocationMeasurement(int index, Row row) {
+        LOGGER.info("idx:{}, time={}, location(x={}, y={}, z={})", index, row.getInstant("reading_time"),
+                row.getUdtValue("location").getDouble("x_coordinate"),
+                row.getUdtValue("location").getDouble("y_coordinate"),
+                row.getUdtValue("location").getDouble("z_coordinate"));
     }
 }

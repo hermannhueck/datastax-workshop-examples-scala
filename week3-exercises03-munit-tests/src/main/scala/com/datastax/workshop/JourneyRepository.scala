@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql._
 import com.datastax.oss.driver.api.core.uuid.Uuids
+import com.datastax.oss.driver.api.core.`type`.UserDefinedType
 
 import DataModelConstants._
 
@@ -96,17 +97,17 @@ class JourneyRepository(cqlSession: CqlSession) {
     * select journey_id, spacecraft_name,summary,start,end,active from killrvideo.spacecraft_journey_catalog;
     */
   def log(
-      journeyId: UUID,
       spacecraft: String,
+      journeyId: UUID,
+      readTime: Instant,
       speed: Double,
       pressure: Double,
       temperature: Double,
       x: Double,
       y: Double,
-      z: Double,
-      readTime: Instant
+      z: Double
   ): ResultSet = {
-    val bb          = new BatchStatementBuilder(BatchType.LOGGED)
+    val bb                           = new BatchStatementBuilder(BatchType.LOGGED)
     bb.addStatement(
       SimpleStatement
         .builder(
@@ -144,12 +145,13 @@ class JourneyRepository(cqlSession: CqlSession) {
         .build
     )
     // UDT
-    val udtlocation = cqlSession
-      .getMetadata
-      .getKeyspace(cqlSession.getKeyspace.get)
-      .flatMap((ks) => ks.getUserDefinedType("location_udt"))
-      .orElseThrow(() => new IllegalArgumentException("Missing UDT 'location_udt'"))
-    val location    = udtlocation.newValue
+    val udtlocation: UserDefinedType =
+      cqlSession
+        .getMetadata
+        .getKeyspace(cqlSession.getKeyspace.get)
+        .flatMap(ks => ks.getUserDefinedType("location_udt"))
+        .orElseThrow(() => new IllegalArgumentException("Missing UDT 'location_udt'"))
+    val location                     = udtlocation.newValue
     location.setDouble("x_coordinate", x)
     location.setDouble("y_coordinate", y)
     location.setDouble("z_coordinate", z)
@@ -233,6 +235,44 @@ class JourneyRepository(cqlSession: CqlSession) {
     Option(rs.one()).map(Journey.apply)
   }
 
+  def findJourneys(spacecraft: String): List[Journey] = {
+
+    val stmt = SimpleStatement
+      .builder("select * from spacecraft_journey_catalog where spacecraft_name=?")
+      .addPositionalValue(spacecraft)
+      .build
+
+    val rs = cqlSession.execute(stmt)
+    import scala.jdk.CollectionConverters._
+    rs.all().asScala.toList.map(Journey.apply)
+  }
+
+  def findSpeedMeasurements(spacecraft: String, journeyId: UUID): List[Row] =
+    findMeasurements(TABLE_METRIC_SPEED, spacecraft, journeyId)
+
+  def findTemperatureMeasurements(spacecraft: String, journeyId: UUID): List[Row] =
+    findMeasurements(TABLE_METRIC_TEMPERATURE, spacecraft, journeyId)
+
+  def findPressureMeasurements(spacecraft: String, journeyId: UUID): List[Row] =
+    findMeasurements(TABLE_METRIC_PRESSURE, spacecraft, journeyId)
+
+  def findLocationMeasurements(spacecraft: String, journeyId: UUID): List[Row] =
+    findMeasurements(TABLE_METRIC_LOCATION, spacecraft, journeyId)
+
+  private def findMeasurements(tableName: String, spacecraft: String, journeyId: UUID): List[Row] = {
+
+    val stmt = SimpleStatement
+      .builder(s"select * from $tableName where spacecraft_name=? AND journey_id=?")
+      .addPositionalValue(spacecraft)
+      .addPositionalValue(journeyId)
+      .build
+
+    val rs = cqlSession.execute(stmt)
+
+    import scala.jdk.CollectionConverters._
+    rs.all().asScala.toList
+  }
+
   def clearTable(tableName: String): ResultSet =
     cqlSession.execute(
       SimpleStatement
@@ -245,7 +285,7 @@ class JourneyRepository(cqlSession: CqlSession) {
       TABLE_METRIC_SPEED,
       TABLE_METRIC_TEMPERATURE,
       TABLE_METRIC_PRESSURE,
-      TABLE_METRIC_PRESSURE,
+      TABLE_METRIC_LOCATION,
       TABLE_JOURNEY
     ) foreach clearTable
 }

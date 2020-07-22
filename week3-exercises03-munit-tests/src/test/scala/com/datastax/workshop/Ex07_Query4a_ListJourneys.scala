@@ -1,7 +1,5 @@
 package com.datastax.workshop
 
-import com.datastax.oss.driver.api.core.cql._
-
 class Ex07_Query4a_ListJourneys extends ExerciseBase("Exercise4") {
 
   /*
@@ -11,15 +9,8 @@ class Ex07_Query4a_ListJourneys extends ExerciseBase("Exercise4") {
    */
   test("list journeys") {
 
-    val stmt = SimpleStatement
-      .builder("select * from spacecraft_journey_catalog where spacecraft_name=?")
-      .addPositionalValue(SPACECRAFT)
-      .build
-
-    val rs = cqlSession.execute(stmt)
-    import scala.jdk.CollectionConverters._
-    rs.all().asScala.foreach { row =>
-      LOGGER.info("- Journey: {} Summary: {}", row.getUuid("journey_id"), row.getString("summary"))
+    journeyRepo.findJourneys(SPACECRAFT).foreach { journey =>
+      LOGGER.info("- Journey: {} Summary: {}", journey.id, journey.summary)
     }
 
     LOGGER.info("SUCCESS")

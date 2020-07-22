@@ -2,32 +2,55 @@ package com.datastax.workshop
 
 import java.util.UUID
 
-import com.datastax.oss.driver.api.core.cql._
+import com.datastax.oss.driver.api.core.cql.Row
 
 class Ex09_Query4c_ReadMetrics extends ExerciseBase("Exercise4") {
 
-  test("read a dimension") {
+  test("read measurements") {
 
-    val stmt = SimpleStatement
-      .builder("select * from spacecraft_speed_over_time where spacecraft_name=? AND journey_id=?")
-      .addPositionalValue(SPACECRAFT)
-      .addPositionalValue(UUID.fromString(JOURNEY_ID))
-      .build
+    LOGGER.info("----- Speed Measurements -----")
+    journeyRepo
+      .findSpeedMeasurements(SPACECRAFT, UUID.fromString(JOURNEY_ID))
+      .zipWithIndex
+      .foreach { case row -> index => logMeasurement("speed", index, row) }
 
-    val rs = cqlSession.execute(stmt)
+    LOGGER.info("----- Temperature Measurements -----")
+    journeyRepo
+      .findTemperatureMeasurements(SPACECRAFT, UUID.fromString(JOURNEY_ID))
+      .zipWithIndex
+      .foreach { case row -> index => logMeasurement("temperature", index, row) }
 
-    import scala.jdk.CollectionConverters._
-    val rows = rs.all().asScala
-    rows.zipWithIndex.foreach {
-      case (row, index) =>
-        LOGGER.info(
-          "idx:{}, time={}, value={}",
-          index,
-          row.getInstant("reading_time"),
-          row.getDouble("speed")
-        )
-    }
+    LOGGER.info("----- Pressure Measurements -----")
+    journeyRepo
+      .findPressureMeasurements(SPACECRAFT, UUID.fromString(JOURNEY_ID))
+      .zipWithIndex
+      .foreach { case row -> index => logMeasurement("pressure", index, row) }
+
+    LOGGER.info("----- Location Measurements -----")
+    journeyRepo
+      .findLocationMeasurements(SPACECRAFT, UUID.fromString(JOURNEY_ID))
+      .zipWithIndex
+      .foreach { case row -> index => logLocationMeasurement(index, row) }
 
     LOGGER.info("SUCCESS")
+  }
+
+  def logMeasurement(kind: String, index: Int, row: Row): Unit =
+    LOGGER.info(
+      "idx:{}, time={}, value={}",
+      index,
+      row.getInstant("reading_time"),
+      row.getDouble(kind)
+    )
+
+  def logLocationMeasurement(index: Int, row: Row): Unit = {
+    LOGGER.info(
+      "idx:{}, time={}, location(x={}, y={}, z={})",
+      index,
+      row.getInstant("reading_time"),
+      row.getUdtValue("location").getDouble("x_coordinate"),
+      row.getUdtValue("location").getDouble("y_coordinate"),
+      row.getUdtValue("location").getDouble("z_coordinate")
+    )
   }
 }
