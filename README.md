@@ -1,10 +1,6 @@
 # Datastax Workshop Examples implemented in Scala
 ### (short name: datastax-workshop-examples-scala)
 
-This project requires Java 8.
-Before starting sbt check with: *java -version*
-
-It uses the *sbt* build tool.
 
 This project contains five sub projects - one built on the base of the previous one:
 
@@ -41,3 +37,42 @@ This project contains five sub projects - one built on the base of the previous 
 
 - MUnit test framework:
   - https://scalameta.org/munit/
+
+### Compile, run, test
+
+This project requires Java 8 in the class path.
+Before starting sbt check with: *java -version*
+
+It uses *sbt* - the Scala build tool - to build the project.
+
+Two options, how to compile, run and test the examples
+- use cloud development with Gitpod
+- use local development on your machine
+  
+#### 1. Instructions for cloud development with Gitpod
+- Klick on https://gitpod.io/#https://github.com/hermannhueck/datastax-workshop-examples-scala
+- Wait until the project development environment is loaded
+- Klick on *import build* when prompted
+- Upload your secure-connect-bundle (e.g. *secure-connect-killrvideocluster.zip*)
+  into the project root to access your own Astra instance
+- Continue with 3.
+
+#### 2. Instructions for local development on your machine,
+- Clone this repo
+- Install sbt on your machine: https://www.scala-sbt.org/1.x/docs/Setup.html
+- Install VSCode on your machine
+- Open VSCode in the cloned project directory
+- In VSCode install the *Metals* extension for Scala development (language server for Scala)
+- Metals detects the the build file *build.sbt* and prompts you to import the build
+- Klick on *import build* when prompted
+- In a terminal window *cd* to the local project directory (the project root)
+- Provide your secure-connect-bundle (e.g. *secure-connect-killrvideocluster.zip*)
+  in the project root to access your own Astra instance
+- Continue with 3.
+
+#### 3. Instructions for both, local and cloud development
+- Start the *sbt* command to get an interactive sbt shell (use *help* for more info)
+- The following commands are to be entered behind the *sbt* prompt:
+- Compile everything: *test:compile*
+- Move to one of the sub projects, e.g.: *project week3-exercise02-scala*
+- Run a single test using the *testOnly* command, e.g.: *testOnly com.datastax.workshop.Ex02_Connect_to_Cassandra*
