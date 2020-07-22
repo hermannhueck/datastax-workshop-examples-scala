@@ -33,10 +33,4 @@ public class Ex03_Query3a_Insert_Journey extends ExerciseBase {
             LOGGER.info("Journey: {}", journey.get());
         }
     }
-
-    /*
-     * select * from spacecraft_journey_catalog WHERE
-     * journey_id=47b04070-c4fb-11ea-babd-17b91da87c10 AND
-     * spacecraft_name='DragonCrew,SpaceX';
-     */
 }

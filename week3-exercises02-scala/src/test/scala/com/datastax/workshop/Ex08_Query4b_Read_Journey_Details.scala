@@ -14,11 +14,6 @@ class Ex08_Query4b_Read_Journey_Details {
 
   import Ex08_Query4b_Read_Journey_Details._
 
-  /*
-   * select * from spacecraft_journey_catalog
-   * WHERE journey_id=47b04070-c4fb-11ea-babd-17b91da87c10
-   * AND spacecraft_name='DragonCrew,SpaceX';
-   */
   @Test
   def read_a_journey(): Unit = {
 

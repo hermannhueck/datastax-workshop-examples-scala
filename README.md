@@ -56,7 +56,7 @@ Two options, how to compile, run and test the examples
 #### 1. Instructions for cloud development with Gitpod
 - Klick on https://gitpod.io/#https://github.com/hermannhueck/datastax-workshop-examples-scala
 - Wait until the project development environment is loaded
-- Klick on *import build* when prompted
+- Klick on *import build* when prompted (try again if fails, see below)
 - Upload your secure-connect-bundle (e.g. *secure-connect-killrvideocluster.zip*)
   into the project root to access your own Astra instance
 - Continue with 3.

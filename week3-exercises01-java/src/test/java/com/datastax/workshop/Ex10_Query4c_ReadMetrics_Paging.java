@@ -10,9 +10,6 @@ import org.junit.runner.RunWith;
 
 import com.datastax.oss.driver.api.core.cql.*;
 
-/**
- * Let's play !
- */
 @RunWith(JUnitPlatform.class)
 public class Ex10_Query4c_ReadMetrics_Paging extends ExerciseBase {
 

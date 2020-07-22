@@ -14,11 +14,6 @@ public class Ex08_Query4b_Read_Journey_Details extends ExerciseBase {
         super("Exercise4");
     }
 
-    /*
-     * select * from spacecraft_journey_catalog WHERE
-     * journey_id=47b04070-c4fb-11ea-babd-17b91da87c10 AND
-     * spacecraft_name='DragonCrew,SpaceX';
-     */
     @Test
     public void read_a_journey() {
         Optional<Journey> j = journeyRepo.find(UUID.fromString(JOURNEY_ID), SPACECRAFT);

@@ -15,7 +15,6 @@ class Ex10_Query4c_ReadMetrics_Paging extends ExerciseBase("Exercise4") {
       .addPositionalValue(UUID.fromString(JOURNEY_ID))
       .build
 
-    // Set page to 10
     stmt = stmt.setPageSize(10)
 
     var rs                 = cqlSession.execute(stmt)
@@ -23,8 +22,7 @@ class Ex10_Query4c_ReadMetrics_Paging extends ExerciseBase("Exercise4") {
 
     showPage(rows = rs.iterator, items = rs.getAvailableWithoutFetching, pageNumber = 1)
 
-    // Here is if you NEXT THE DRIVERS WILL FETCH page 2
-    // We can go directly to page2 with
+    // Here is if you NEXT THE DRIVERS WILL FETCH page 2 // We can go directly to page2 with
     stmt = stmt.setPagingState(pagingStateAsBytes)
     rs = cqlSession.execute(stmt)
 
