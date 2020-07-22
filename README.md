@@ -14,17 +14,21 @@ This project contains five sub projects - one built on the base of the previous 
    to access the Cassandra database.
 
 3. **week3-exercises03-munit-tests:**
-   The third variation of the examples use the Scala test framwork MUnit to implement the tests.
+   The third variation of the examples rewrites the test implementations done with *JUnit*
+   and *JUnitPlatform* with the Scala test framwork *MUnit*.
+   (I prefer *MUnit* in favour of *ScalaTest* and *Specs2*. See resource link below.)
 
 4. **week3-exercises04-phantom:**
    Changed the examples to use the Phantom Scala driver to access Cassandra instead of the datastax/java-driver.
-   Phantom provides it's own type-safe DSL to formulate statements and queries.
-   Hence you no longer define CQL statements in strings but in the DSL checked by the Scala compiler.
-   The Phantom driver is a wrapper around the datastax/java-driver.
+   No more CQL strings! Phantom provides it's own type-safe DSL to formulate statements and queries.
+   Hence you no longer define CQL statements as strings but in a DSL checked by the Scala compiler.
+   The Phantom driver is a wrapper around the 3.x version of the datastax/java-driver.
 
 5. **week3-exercises05-phantom-async:**
-   Changed the Cassandra access methods to return scala.concurrent.Future[A] instead of A.
-   MUnit tests run asynchronously when the 'test' method returns a Future.
+   Changed the Cassandra access methods to return *scala.concurrent.Future[A]* instead of *A*.
+   This also requires a rewrite in the tests when sequencing several *Future*s with *flatMap*
+   or with for-comprehensions (which are syntactic sugar for *flatMap/map*).
+   *MUnit* tests run asynchronously when the 'test' method returns a *Future*.
 
 ### Resources:
 
