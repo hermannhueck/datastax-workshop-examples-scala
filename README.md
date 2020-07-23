@@ -85,4 +85,10 @@ downloaded and installed. In this case run again: *Metals: Import build* ]
 - The following commands are to be entered behind the *sbt* prompt:
 - Compile everything: *test:compile*
 - Move to one of the sub projects, e.g.: *project week3-exercise02-scala*
-- Run a single test using the *testOnly* command, e.g.: *testOnly com.datastax.workshop.Ex02_Connect_to_Cassandra*
+- Run a single test using the *testOnly* command, e.g.:<br/>
+  *testOnly com.datastax.workshop.Ex02_Connect_to_Cassandra*
+
+Hint: The datastax/java-driver 3.x as well as the outworkers/phantom driver based on it,
+both do **not** support connections to Astra using the secure-connect-bundle. But
+the examples using Phantom can be run with a local Cassandra installation or with
+Cassandra running on another host or in a Docker container.
