@@ -4,9 +4,9 @@ import java.util.UUID
 
 import scala.concurrent.Future
 
-import org.joda.time.Instant
-
 import com.outworkers.phantom.dsl._
+
+import org.joda.time.Instant
 
 class JourneyDB(override val connector: CassandraConnection) extends Database[JourneyDB](connector) {
 

@@ -1,7 +1,6 @@
 package com.datastax.workshop
 
-import com.outworkers.phantom.connectors.CassandraConnection
-import com.outworkers.phantom.connectors.ContactPoints
+import com.outworkers.phantom.connectors.{CassandraConnection, ContactPoints}
 
 object DBConnection {
 

@@ -1,12 +1,11 @@
 package com.datastax.workshop
 
-import com.datastax.oss.driver.api.core.`type`.DataTypes._
-import com.datastax.oss.driver.api.querybuilder.SchemaBuilder._
-
 import com.datastax.oss.driver.api.core.CqlSession
+import com.datastax.oss.driver.api.core.`type`.DataTypes._
 import com.datastax.oss.driver.api.core.cql.SimpleStatement
 import com.datastax.oss.driver.api.core.metadata.schema.ClusteringOrder
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder
+import com.datastax.oss.driver.api.querybuilder.SchemaBuilder._
 
 /**
   * A good practice is to group all constants related to the Cassandra

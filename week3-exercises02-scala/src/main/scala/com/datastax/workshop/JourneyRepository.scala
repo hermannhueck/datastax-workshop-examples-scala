@@ -3,11 +3,11 @@ package com.datastax.workshop
 import java.time.Instant
 import java.util.UUID
 
-import org.slf4j.LoggerFactory
-
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql._
 import com.datastax.oss.driver.api.core.uuid.Uuids
+
+import org.slf4j.LoggerFactory
 
 import DataModelConstants._
 

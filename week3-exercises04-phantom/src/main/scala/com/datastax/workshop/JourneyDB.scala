@@ -2,9 +2,9 @@ package com.datastax.workshop
 
 import java.util.UUID
 
-import org.joda.time.Instant
-
 import com.outworkers.phantom.dsl._
+
+import org.joda.time.Instant
 
 class JourneyDB(override val connector: CassandraConnection) extends Database[JourneyDB](connector) {
 

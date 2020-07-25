@@ -2,6 +2,7 @@ package com.datastax.workshop
 
 import java.time.Instant
 import java.util.UUID
+
 import com.datastax.oss.driver.api.core.cql.Row
 
 case class Journey(

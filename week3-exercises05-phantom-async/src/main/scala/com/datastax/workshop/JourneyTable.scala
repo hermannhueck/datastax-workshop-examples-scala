@@ -4,14 +4,13 @@ import java.util.UUID
 
 import scala.concurrent._
 
-import org.joda.time.DateTime
-import org.joda.time.Instant
-
-import org.slf4j.LoggerFactory
+import com.datastax.driver.core.utils.UUIDs
 
 import com.outworkers.phantom.dsl._
 
-import com.datastax.driver.core.utils.UUIDs
+import org.slf4j.LoggerFactory
+
+import org.joda.time.{DateTime, Instant}
 
 case class Journey(
     spaceCraft: String,
