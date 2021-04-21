@@ -6,7 +6,7 @@ object Dependencies {
   lazy val munitVersion              = "0.7.9"
   lazy val scalaCheckVersion         = "1.14.3"
   lazy val phantomVersion            = "2.59.0" // Phantom Cassandra driver
-  lazy val datastaxJavaDriverVersion = "4.7.2"  // Datastax java-driver for Cassandra
+  lazy val datastaxJavaDriverVersion = "4.8.0"  // Datastax java-driver for Cassandra
   lazy val junitJupiterVersion       = "5.6.2"
   lazy val junitPlatformVersion      = "1.6.2"
   lazy val logbackVersion            = "1.2.3"
